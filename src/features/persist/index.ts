@@ -8,4 +8,6 @@ export {
   savePlaylist,
   deletePlaylist,
   setPersistedSongSettings,
+  setPersistedSettings,
+  getPersistedSettings,
 } from './persistence'
