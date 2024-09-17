@@ -113,3 +113,15 @@ export function getPersistedSongSettings(file: string) {
 export function setPersistedSongSettings(file: string, config: SongConfig) {
   return Storage.set(`${file}/settings`, config)
 }
+
+export function getPersistedSettings() {
+  return Storage.get<SongConfig>(`settings`)
+}
+
+export function setPersistedSettings(config: SongConfig) {
+  const newConfig: Partial<SongConfig> = {...config}
+  // remove specific song settings
+  delete newConfig.tracks
+  delete newConfig.keySignature
+  return Storage.set(`settings`, newConfig)
+}

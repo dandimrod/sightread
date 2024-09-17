@@ -6,6 +6,7 @@ import { Song, SongConfig, VisualizationMode } from '@/types'
 import clsx from 'clsx'
 import React, { PropsWithChildren, useCallback, useRef, useState } from 'react'
 import BpmDisplay from './BpmDisplay'
+import { setPersistedSettings } from '@/features/persist'
 
 type SidebarProps = {
   onChange: (settings: SongConfig) => void
@@ -57,12 +58,20 @@ export default function SettingsPanel(props: SidebarProps) {
     props.onChange({ ...props.config, keySignature })
   }
 
+  function saveDefault() {
+    setPersistedSettings(props.config)
+  }
+
   return (
     <div
       className="relative flex max-h-[calc(100vh-300px)] w-full flex-col gap-4 overflow-auto bg-gray-100 p-4 sm:flex-row"
       ref={sidebarRef}
     >
-      <h3 className="text-center text-2xl text-purple-primary">Settings</h3>
+      <div className='flex flex-col'>
+        <h3 className="text-center text-2xl text-purple-primary">Settings</h3>
+        <div className="flex-grow"></div>
+        <button className='bg-purple-primary text-white hover:bg-purple-hover rounded-md px-4 py-2' onClick={()=>saveDefault()}>Save as default</button>
+      </div>
       <div className="flex flex-grow flex-col flex-wrap items-center gap-4 whitespace-nowrap sm:flex-row sm:items-stretch">
         <Section title="Speed" className="flex flex-grow">
           <BpmDisplay />
@@ -121,7 +130,7 @@ export default function SettingsPanel(props: SidebarProps) {
                 onChange={(e) => handleKeySignature(e.target.value as KEY_SIGNATURE)}
               >
                 {getKeySignatures().map((keySig) => {
-                  return <option key={`id-${keySig}`}>{keySig}</option>
+                  return <option key={`id-${keySig}`} value={keySig}>{keySig} {keySig === props.song?.keySignature ? '(Default)' : ''}</option>
                 })}
               </select>
             </div>

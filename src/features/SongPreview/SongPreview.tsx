@@ -22,7 +22,7 @@ function SongPreview({ songId, source }: SongPreviewProps) {
     player.setSong(song, getDefaultSongSettings(song))
   }, [song, player])
 
-  const songConfig = getDefaultSongSettings(song)
+  const songConfig = getDefaultSongSettings(song, true)
   return (
     <SongVisualizer
       song={song}

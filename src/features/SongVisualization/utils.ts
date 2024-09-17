@@ -1,7 +1,7 @@
 import { Song, Track, SongNote, SongConfig, SongMeasure, Hand, TrackSetting } from '@/types'
 import { gmInstruments, InstrumentName } from '@/features/synth'
 import { clamp, mapValues } from '@/utils'
-import { getPersistedSongSettings, setPersistedSongSettings } from '@/features/persist'
+import { getPersistedSongSettings, setPersistedSongSettings, getPersistedSettings } from '@/features/persist'
 import { isBlack } from '../theory'
 import { parserInferHands } from '../parsers'
 import { GivenState } from './canvasRenderer'
@@ -54,8 +54,8 @@ function getInstrument(track: Track): InstrumentName {
     : ((track.instrument || track.name) as InstrumentName) ?? gmInstruments[0]
 }
 
-export function getDefaultSongSettings(song?: Song): SongConfig {
-  const songConfig: SongConfig = {
+export function getDefaultSongSettings(song?: Song, isPreview?: boolean): SongConfig {
+  const defaultSongConfig: SongConfig = {
     left: true,
     right: true,
     waiting: false,
@@ -65,6 +65,9 @@ export function getDefaultSongSettings(song?: Song): SongConfig {
     visualization: 'falling-notes',
     tracks: {},
   }
+  const persistedSettings = getPersistedSettings() ?? {}
+  const songConfig = isPreview ? defaultSongConfig: {...defaultSongConfig, ...persistedSettings}
+
   if (!song) {
     return songConfig
   }
