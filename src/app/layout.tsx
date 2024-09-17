@@ -1,5 +1,4 @@
 import '@/styles/global.css'
-import { GA_TRACKING_ID } from '@/features/analytics'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
@@ -50,20 +49,6 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
 
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.ico" />
-
-        {/* Global Site Tag (gtag.js) - Google Analytics */}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });`,
-          }}
-        />
       </head>
       <body>
         <Providers>{children}</Providers>
