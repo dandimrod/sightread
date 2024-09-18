@@ -1,4 +1,6 @@
-# [sightread](http://sightread.dev)
+# [sightread](https://dandimrod.dev/sightread)
+
+This is a fork from the [original](https://sightread.dev) that removes Google Analytics and the back end to make it into a static 
 
 A free and open-source webapp for learning to play Piano. Play music without needing to learn sheet music. Plug in your MIDI keyboard for the optimal experience. See full details on the [website](https://sightread.dev/about).
 

@@ -77,13 +77,13 @@ setupMidiDeviceListeners()
 async function setupMidiDeviceListeners() {
   const inputs = await getMidiInputs()
   const outputs = await getMidiOutputs()
-  for (const device of inputs.values()) {
-    enableInputMidiDevice(device)
-  }
+  // for (const device of inputs.values()) {
+  //   enableInputMidiDevice(device)
+  // }
 
-  for (const device of outputs.values()) {
-    enableOutputMidiDevice(device)
-  }
+  // for (const device of outputs.values()) {
+  //   enableOutputMidiDevice(device)
+  // }
 }
 
 export type MidiEvent = {

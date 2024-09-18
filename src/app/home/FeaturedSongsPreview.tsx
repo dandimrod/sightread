@@ -8,7 +8,6 @@ import type { SongSource } from '@/types'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
-import placeholderPic from './featured-songs-placeholder.png'
 
 const FEATURED_SONGS: { [id: string]: { source: SongSource; id: string } } = {
   prelude: { source: 'builtin', id: 'fa7a5d0bf5012a4cb4a19f1de2e58b10' },
@@ -45,7 +44,7 @@ export function FeaturedSongsPreview({ marginTop }: { marginTop: number }) {
     >
       <SongPreview songId={songId} source={source} />
       {showPlaceholder && (
-        <Image alt="falling notes of ode to joy" src={placeholderPic} fill priority />
+        <Image alt="falling notes of ode to joy" src="/public/images/featured-songs-placeholder.png" fill priority />
       )}
       <div className="absolute top-0 flex h-[50px] w-full items-center justify-center bg-black/80">
         <button

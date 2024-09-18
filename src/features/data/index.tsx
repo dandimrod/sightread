@@ -2,15 +2,24 @@
 
 import { parseMidi } from '@/features/parsers'
 import { getUploadedSong } from '@/features/persist'
-import { Song, SongSource } from '@/types'
+import { Song, SongSource, SongMetadata } from '@/types'
 import useSWR, { type SWRResponse } from 'swr'
+const songManifest = require('@/manifest.json')
+const map: Map<string, SongMetadata> = new Map(songManifest.map((s: SongMetadata) => [s.id, s]))
 
 function handleSong(response: Response): Promise<Song> {
   return response.arrayBuffer().then(parseMidi)
 }
 
 function getSongUrl(id: string, source: SongSource) {
-  return `/api/midi?id=${id}&source=${source}`
+  if(source === 'midishare') {
+    return `https://assets.midishare.dev/scores/${id}/${id}.mid`
+  }
+  const path = map.get(id)?.file
+  if (!path) {
+    throw new Error('Song '+id+' not found')
+  }
+  return '/'+path;
 }
 
 function getBase64Song(data: string): Song {
@@ -22,14 +31,14 @@ function fetchSong(id: string, source: SongSource): Promise<Song> {
   switch (source) {
     case 'midishare':
     case 'builtin':
-    const url = getSongUrl(id, source)
-    return fetch(url).then(handleSong)
+      const url = getSongUrl(id, source)
+      return fetch(url).then(handleSong)
     case 'base64':
-    return Promise.resolve(getBase64Song(id))
+      return Promise.resolve(getBase64Song(id))
     case 'upload':
-    return Promise.resolve(getUploadedSong(id)).then((res) =>
-      res === null ? Promise.reject(new Error('Could not find song')) : res,
-    )
+      return Promise.resolve(getUploadedSong(id)).then((res) =>
+        res === null ? Promise.reject(new Error('Could not find song')) : res,
+      )
     case 'url':
       return fetch(id).then(handleSong)
     default:
